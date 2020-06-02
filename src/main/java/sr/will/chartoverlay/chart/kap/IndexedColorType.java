@@ -1,18 +1,18 @@
 package sr.will.chartoverlay.chart.kap;
 
-public enum ColorType {
+public enum IndexedColorType {
     RGB("RGB"),
     DAY("DAY"),
     DUSK("DSK"),
     GRAY("GRY"),
+    NIGHT("NGT"),
+    NIGHT_RED("NGR"),
     PRC("PRC"),
-    PRG("PRG"),
-    NGR("NGR"),
-    NGT("NGT");
+    PRG("PRG");
 
     private String shortHand;
 
-    ColorType(String shortHand) {
+    IndexedColorType(String shortHand) {
         this.shortHand = shortHand;
     }
 

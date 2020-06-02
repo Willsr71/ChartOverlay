@@ -1,6 +1,5 @@
 package sr.will.chartoverlay.spark;
 
-import com.google.gson.Gson;
 import spark.Spark;
 import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.chart.ChartManager;
@@ -11,8 +10,6 @@ import java.io.File;
 import static spark.Spark.*;
 
 public class SparkHandler {
-    private Gson gson = new Gson();
-
     public SparkHandler() {
         port(8080);
         externalStaticFileLocation("web");
