@@ -1,6 +1,8 @@
 package sr.will.chartoverlay.chart.token;
 
 public class StringToken extends Token {
+    public static final StringToken BLANK = new StringToken(null, null);
+
     public StringToken(String id, String name) {
         super(id, name);
     }

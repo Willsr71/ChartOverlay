@@ -22,7 +22,8 @@ public class MapToken extends Token {
                 continue;
             }
             String[] parts = section.split("=");
-            map.put(parts[0], parts[1]);
+            String value = parts.length == 2 ? parts[1] : "";
+            map.put(parts[0], value);
             lastItem = parts[0];
         }
         return map;

@@ -1,6 +1,6 @@
 package sr.will.chartoverlay.chart.kap;
 
-import sr.will.chartoverlay.chart.generic.ChartPoint;
+import sr.will.chartoverlay.generic.ChartPoint;
 
 import java.util.List;
 

@@ -22,6 +22,14 @@ public abstract class Token {
 
     public abstract Object parse(String input);
 
+    public Token getSubToken(String name) {
+        for (Token token : subTokens) {
+            if (token.getName().equals(name)) return token;
+        }
+
+        return null;
+    }
+
     public String getId() {
         return id;
     }

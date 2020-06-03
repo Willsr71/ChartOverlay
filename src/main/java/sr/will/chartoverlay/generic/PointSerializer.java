@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.generic;
+package sr.will.chartoverlay.generic;
 
 import com.google.gson.*;
 

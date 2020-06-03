@@ -1,9 +1,11 @@
 package sr.will.chartoverlay.chart.kap;
 
-public class KAPFile {
-    public KAPHeader header;
+import sr.will.chartoverlay.chart.Header;
 
-    public KAPFile(KAPHeader header) {
+public class KAPFile {
+    public Header header;
+
+    public KAPFile(Header header) {
         this.header = header;
     }
 }

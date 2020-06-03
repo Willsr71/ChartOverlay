@@ -2,9 +2,8 @@ package sr.will.chartoverlay.chart;
 
 import org.apache.commons.io.FileUtils;
 import sr.will.chartoverlay.ChartOverlay;
-import sr.will.chartoverlay.chart.bsb.BSBHeader;
 import sr.will.chartoverlay.chart.kap.KAPFile;
-import sr.will.chartoverlay.chart.kap.KAPHeader;
+import sr.will.chartoverlay.chart.token.Token;
 import sr.will.chartoverlay.chart.token.Tokens;
 
 import java.io.*;
@@ -20,13 +19,11 @@ public class ChartIO {
 
     public static RasterChart read(String chart) throws IOException {
         String chartDir = CHART_DIR + chart + "/";
-        BSBHeader header = new BSBHeader(FileUtils.readFileToString(new File(chartDir + chart + ".BSB"), StandardCharsets.UTF_8));
+        Header header = new Header(FileUtils.readFileToString(new File(chartDir + chart + ".BSB"), StandardCharsets.UTF_8));
         RasterChart rasterChart = new RasterChart(header);
 
         for (Object kapObject : (List) header.items.get(Tokens.KAP_FILES)) {
-            Map<String, Object> kapInfo = (Map<String, Object>) kapObject;
-            ChartOverlay.LOGGER.info("kapInfo: {}, fileName: {}, containsKey: {}", kapInfo.keySet(), kapInfo.get("fileName"), kapInfo.containsKey("fileName"));
-            //rasterChart.addKAPFile(readKAP(chartDir + kapInfo.get("fileName")));
+            rasterChart.addKAPFile(readKAP(chartDir + ((Map<Token, Object>) kapObject).get(Tokens.KAP_FILES.subToken("fileName"))));
         }
 
         return rasterChart;
@@ -34,18 +31,14 @@ public class ChartIO {
 
     public static KAPFile readKAP(String file) throws IOException {
         FileInputStream inputStream = new FileInputStream(file);
-        KAPHeader header = getKAPHeader(inputStream);
-        //getKAPImage(inputStream, header.info.width, header.info.height);
+        Header header = getKAPHeader(inputStream);
+        //getKAPImage(inputStream, dimensions.get(0), dimensions.get(1));
 
         inputStream.close();
         return new KAPFile(header);
     }
 
-    public static void write(OutputStream outputStream) {
-
-    }
-
-    public static KAPHeader getKAPHeader(InputStream inputStream) throws IOException {
+    public static Header getKAPHeader(InputStream inputStream) throws IOException {
         StringBuilder header = new StringBuilder();
         int c = inputStream.read();
         while (c != -1) {
@@ -58,7 +51,7 @@ public class ChartIO {
             c = inputStream.read();
         }
 
-        return new KAPHeader(header.toString());
+        return new Header(header.toString());
     }
 
     public static void getKAPImage(InputStream inputStream, int width, int height) throws IOException {
