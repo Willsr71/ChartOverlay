@@ -51,11 +51,6 @@ public class SparkHandler {
             ChartOverlay.instance.reloadCatalog();
             return new Response();
         });
-
-        get("/stop", (request, response) -> {
-            ChartOverlay.instance.stop();
-            return new Response();
-        });
     }
 
     public void stop() {
