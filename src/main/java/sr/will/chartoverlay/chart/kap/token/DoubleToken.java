@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 public class DoubleToken extends Token {
     public static final DoubleToken BLANK = new DoubleToken(null, null);

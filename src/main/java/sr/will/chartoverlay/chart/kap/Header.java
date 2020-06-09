@@ -1,6 +1,6 @@
-package sr.will.chartoverlay.chart;
+package sr.will.chartoverlay.chart.kap;
 
-import sr.will.chartoverlay.chart.token.Tokens;
+import sr.will.chartoverlay.chart.kap.token.Tokens;
 
 import java.util.*;
 

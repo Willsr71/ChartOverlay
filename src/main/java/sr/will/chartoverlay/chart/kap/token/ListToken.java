@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,7 @@ public class ListToken extends Token {
     public static final ListToken BLANK = new ListToken(null, null);
     public static final ListToken BLANK_PIPE = new ListToken(null, null).setSplitToken("\\|");
     public static final ListToken BLANK_SEMICOLON = new ListToken(null, null).setSplitToken(";");
+    public static final ListToken BLANK_INTEGER = new ListToken(null, null, IntegerToken.BLANK);
 
     private String splitToken = ",";
 

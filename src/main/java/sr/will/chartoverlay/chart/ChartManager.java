@@ -2,6 +2,7 @@ package sr.will.chartoverlay.chart;
 
 import org.apache.commons.io.FileUtils;
 import sr.will.chartoverlay.ChartOverlay;
+import sr.will.chartoverlay.chart.kap.RasterChart;
 
 import java.io.File;
 import java.io.FileOutputStream;

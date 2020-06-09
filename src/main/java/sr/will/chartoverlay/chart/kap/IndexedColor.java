@@ -5,8 +5,8 @@ import java.util.List;
 
 public class IndexedColor {
     public transient IndexedColorType type;
-    public transient int index;
-    public transient Color color;
+    private transient Color color;
+    public int index;
     public int red;
     public int green;
     public int blue;
@@ -18,5 +18,10 @@ public class IndexedColor {
         green = Integer.parseInt(list.get(2));
         blue = Integer.parseInt(list.get(3));
         color = new Color(red, green, blue);
+    }
+
+    public Color getColor() {
+        if (color == null) color = new Color(red, green, blue);
+        return color;
     }
 }

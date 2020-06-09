@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 public class StringToken extends Token {
     public static final StringToken BLANK = new StringToken(null, null);

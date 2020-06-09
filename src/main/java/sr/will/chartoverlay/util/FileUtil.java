@@ -1,19 +1,14 @@
 package sr.will.chartoverlay.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 import org.json.XML;
 import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.descriptor.catalog.json.Catalog;
 
 import java.io.*;
+import java.lang.reflect.Type;
 
 public class FileUtil {
-    public static final Gson GSON = new GsonBuilder()
-                                            .setPrettyPrinting()
-                                            .create();
-
     private static File getFolder(String name) {
         File folder = new File(name);
         if (folder.mkdirs()) ChartOverlay.LOGGER.info("Created folder(s)");
@@ -48,22 +43,23 @@ public class FileUtil {
         }
     }
 
-    public static Catalog readProductCatalog(String name) {
-        ChartOverlay.LOGGER.info("Reading product catalog...");
+    public static <T> T readJson(File file, Type typeof) {
         try {
-            return GSON.fromJson(new FileReader(new File(getFolder("catalog"), name + ".json")), Catalog.class);
-        } catch (FileNotFoundException e) {
+            FileReader fileReader = new FileReader(file);
+            T obj = ChartOverlay.GSON.fromJson(fileReader, typeof);
+            fileReader.close();
+            return obj;
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public static void writeGson(Object object, String folder, String name, String message) {
         ChartOverlay.LOGGER.info("Writing " + message + "...");
         try {
             FileWriter writer = new FileWriter(new File(getFolder(folder), name + ".json"));
-            writer.write(GSON.toJson(object));
+            writer.write(ChartOverlay.GSON.toJson(object));
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,7 +1,6 @@
 package sr.will.chartoverlay.descriptor.catalog.json;
 
 import org.json.JSONObject;
-import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.util.JsonUtil;
 import sr.will.chartoverlay.util.Parser;
 

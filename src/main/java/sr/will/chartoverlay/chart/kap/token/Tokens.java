@@ -1,9 +1,9 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 import java.util.*;
 
-import static sr.will.chartoverlay.chart.token.Tokens.TType.MULTI_STRING;
-import static sr.will.chartoverlay.chart.token.Tokens.TType.SINGLE_REGEX;
+import static sr.will.chartoverlay.chart.kap.token.Tokens.TType.MULTI_STRING;
+import static sr.will.chartoverlay.chart.kap.token.Tokens.TType.SINGLE_REGEX;
 
 public enum Tokens {
     // Common tokens
@@ -41,7 +41,7 @@ public enum Tokens {
     PANE_INFO(new MapToken("BSB", "paneInfo", Arrays.asList(
             new StringToken("NA", "name"),
             new IntegerToken("NU", "number"),
-            new ListToken("RA", "dimensions", IntegerToken.BLANK),
+            new MappedListToken("RA", "dimensions", ListToken.BLANK_INTEGER, Arrays.asList("width", "height")),
             new IntegerToken("DU", "dpi")
     ))),
     PANE_PARAMS(new MapToken("KNP", "paneParameters", Arrays.asList(
@@ -67,26 +67,26 @@ public enum Tokens {
     POLY_Y_TO_LAT(new ListToken("PWY", "polyYtoLat", Arrays.asList(IntegerToken.BLANK, DoubleToken.BLANK))),
     DATUM_SHIFT(new ListToken("DTM", "datumShift", DoubleToken.BLANK)),
     ORG_UPDATE_DATES(new ListToken("ADN[0-9]{4}", "orgUpdateDates").setSplitToken(";"), SINGLE_REGEX),
-    CHART_UPDATES(new ListToken("ARE[0-9]{4}", "chartUpdates", Arrays.asList(
+    CHART_UPDATES(new MappedListToken("ARE[0-9]{4}", "chartUpdates", new ListToken(null, null, Arrays.asList(
             null, DoubleToken.BLANK, DoubleToken.BLANK, StringToken.BLANK, StringToken.BLANK, StringToken.BLANK, ListToken.BLANK_PIPE
-    )), SINGLE_REGEX),
-    COLOR_RGB(new ListToken("RGB", "colorRGB", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_GRAY(new ListToken("GRY", "colorGray", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_DAY(new ListToken("DAY", "colorDay", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_DUSK(new ListToken("DSK", "colorDusk", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_NIGHT(new ListToken("NGT", "colorNight", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_NIGHT_RED(new ListToken("NGR", "colorNightRed", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_PRC(new ListToken("PRC", "colorPRC", IntegerToken.BLANK), MULTI_STRING),
-    COLOR_PRG(new ListToken("PRG", "colorPRG", IntegerToken.BLANK), MULTI_STRING),
-    REFERENCE_POINTS(new ListToken("REF", "referencePoints", Arrays.asList(
+    )), Arrays.asList("lat", "long", "action", "itemName", "chartingLabel", "publishInfo")), SINGLE_REGEX),
+    COLOR_RGB(new MappedListToken("RGB", "colorRGB", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_GRAY(new MappedListToken("GRY", "colorGray", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_DAY(new MappedListToken("DAY", "colorDay", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_DUSK(new MappedListToken("DSK", "colorDusk", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_NIGHT(new MappedListToken("NGT", "colorNight", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_NIGHT_RED(new MappedListToken("NGR", "colorNightRed", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_PRC(new MappedListToken("PRC", "colorPRC", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_PRG(new MappedListToken("PRG", "colorPRG", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    REFERENCE_POINTS(new MappedListToken("REF", "referencePoints", new ListToken(null, null, Arrays.asList(
             IntegerToken.BLANK, IntegerToken.BLANK, IntegerToken.BLANK, DoubleToken.BLANK
-    )), MULTI_STRING),
+    )), Arrays.asList("id", "x", "y", "lat", "long")), MULTI_STRING),
     REFERENCE_POINT_ERROR(new ListToken("ERR", "referencePointError", Arrays.asList(
             IntegerToken.BLANK, DoubleToken.BLANK
     )), MULTI_STRING),
-    POLYGON(new ListToken("PLY", "polygon", Arrays.asList(
+    POLYGON(new MappedListToken("PLY", "polygon", new ListToken(null, null, Arrays.asList(
             IntegerToken.BLANK, DoubleToken.BLANK
-    )), MULTI_STRING);
+    )), Arrays.asList("id", "lat", "long")), MULTI_STRING);
 
     private static boolean populated = false;
     private static final Map<TType, List<Tokens>> tokens = new HashMap<>();
@@ -129,7 +129,7 @@ public enum Tokens {
 
     public static boolean isList(String id) {
         Tokens t = getById(id);
-        return t != null && t.getToken() instanceof ListToken;
+        return t != null && (t.getToken() instanceof ListToken || t.getToken() instanceof MappedListToken);
     }
 
     public static boolean isMap(String id) {

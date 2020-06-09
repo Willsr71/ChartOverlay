@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart;
+package sr.will.chartoverlay.chart.kap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;

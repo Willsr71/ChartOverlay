@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 import java.util.ArrayList;
 import java.util.List;

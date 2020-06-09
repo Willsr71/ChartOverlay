@@ -1,4 +1,4 @@
-package sr.will.chartoverlay.chart.token;
+package sr.will.chartoverlay.chart.kap.token;
 
 public class IntegerToken extends Token {
     public static final IntegerToken BLANK = new IntegerToken(null, null);
