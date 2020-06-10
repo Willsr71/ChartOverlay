@@ -23,7 +23,6 @@ public class ChartOverlay {
                                             .registerTypeAdapter(ChartPoint.class, new PointSerializer())
                                             .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
                                             .registerTypeAdapter(Header.class, new HeaderSerializer())
-                                            .setPrettyPrinting()
                                             .create();
 
     public static SparkHandler sparkHandler;

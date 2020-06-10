@@ -1,13 +1,10 @@
 package sr.will.chartoverlay.spark;
 
-import spark.Route;
 import spark.Spark;
 import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.chart.ChartIO;
 import sr.will.chartoverlay.chart.ChartManager;
 import sr.will.chartoverlay.util.FileUtil;
-
-import java.io.File;
 
 import static spark.Spark.*;
 
@@ -17,13 +14,9 @@ public class SparkHandler {
     public SparkHandler() {
         port(8080);
         externalStaticFileLocation("web");
-        //defaultResponseTransformer(new JsonTransformer());
     }
 
     public void start() {
-        File uploadDir = new File("upload");
-        uploadDir.mkdir();
-
         before((q, a) -> {
             String path = q.pathInfo();
             if (path.endsWith("/")) a.redirect(path.substring(0, path.length() - 1));

@@ -20,7 +20,7 @@ public class ChartIO {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     public static void update(String chart) throws IOException {
