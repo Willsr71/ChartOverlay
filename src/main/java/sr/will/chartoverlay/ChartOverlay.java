@@ -8,6 +8,7 @@ import sr.will.chartoverlay.chart.kap.Header;
 import sr.will.chartoverlay.chart.kap.HeaderSerializer;
 import sr.will.chartoverlay.descriptor.catalog.json.Catalog;
 import sr.will.chartoverlay.generic.ChartPoint;
+import sr.will.chartoverlay.generic.PointDeserializer;
 import sr.will.chartoverlay.generic.PointSerializer;
 import sr.will.chartoverlay.spark.SparkHandler;
 import sr.will.chartoverlay.util.FileUtil;
@@ -20,7 +21,9 @@ public class ChartOverlay {
     public static final Logger LOGGER = LoggerFactory.getLogger("ChartOverlay");
     public static final Gson GSON = new GsonBuilder()
                                             .registerTypeAdapter(ChartPoint.class, new PointSerializer())
+                                            .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
                                             .registerTypeAdapter(Header.class, new HeaderSerializer())
+                                            .setPrettyPrinting()
                                             .create();
 
     public static SparkHandler sparkHandler;

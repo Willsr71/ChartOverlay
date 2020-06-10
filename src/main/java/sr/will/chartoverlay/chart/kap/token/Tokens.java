@@ -70,23 +70,23 @@ public enum Tokens {
     CHART_UPDATES(new MappedListToken("ARE[0-9]{4}", "chartUpdates", new ListToken(null, null, Arrays.asList(
             null, DoubleToken.BLANK, DoubleToken.BLANK, StringToken.BLANK, StringToken.BLANK, StringToken.BLANK, ListToken.BLANK_PIPE
     )), Arrays.asList("lat", "long", "action", "itemName", "chartingLabel", "publishInfo")), SINGLE_REGEX),
-    COLOR_RGB(new MappedListToken("RGB", "colorRGB", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_GRAY(new MappedListToken("GRY", "colorGray", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_DAY(new MappedListToken("DAY", "colorDay", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_DUSK(new MappedListToken("DSK", "colorDusk", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_NIGHT(new MappedListToken("NGT", "colorNight", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_NIGHT_RED(new MappedListToken("NGR", "colorNightRed", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_PRC(new MappedListToken("PRC", "colorPRC", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
-    COLOR_PRG(new MappedListToken("PRG", "colorPRG", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_RGB(new MappedListToken("RGB", "_colorRGB", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_GRAY(new MappedListToken("GRY", "_colorGray", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_DAY(new MappedListToken("DAY", "_colorDay", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_DUSK(new MappedListToken("DSK", "_colorDusk", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_NIGHT(new MappedListToken("NGT", "_colorNight", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_NIGHT_RED(new MappedListToken("NGR", "_colorNightRed", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_PRCOLOR(new MappedListToken("PRC", "_colorPRColor", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
+    COLOR_PRGRAY(new MappedListToken("PRG", "_colorPRGray", ListToken.BLANK_INTEGER, MappedListToken.COLOR_NAMES), MULTI_STRING),
     REFERENCE_POINTS(new MappedListToken("REF", "referencePoints", new ListToken(null, null, Arrays.asList(
             IntegerToken.BLANK, IntegerToken.BLANK, IntegerToken.BLANK, DoubleToken.BLANK
-    )), Arrays.asList("id", "x", "y", "lat", "long")), MULTI_STRING),
+    )), Arrays.asList("id", "x", "y", "latitude", "longitude")), MULTI_STRING),
     REFERENCE_POINT_ERROR(new ListToken("ERR", "referencePointError", Arrays.asList(
             IntegerToken.BLANK, DoubleToken.BLANK
     )), MULTI_STRING),
     POLYGON(new MappedListToken("PLY", "polygon", new ListToken(null, null, Arrays.asList(
             IntegerToken.BLANK, DoubleToken.BLANK
-    )), Arrays.asList("id", "lat", "long")), MULTI_STRING);
+    )), Arrays.asList("id", "latitude", "longitude")), MULTI_STRING);
 
     private static boolean populated = false;
     private static final Map<TType, List<Tokens>> tokens = new HashMap<>();

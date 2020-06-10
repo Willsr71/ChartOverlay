@@ -53,4 +53,14 @@ public class Catalog implements Serializable {
             }
         }
     }
+
+    public Chart getByExtent(int extentId) {
+        for (Chart chart : charts) {
+            for (Extent extent : chart.extents) {
+                if (extent.number == extentId) return chart;
+            }
+        }
+
+        return null;
+    }
 }
