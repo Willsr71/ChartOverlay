@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="/catalog/list" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="fabric.js" as="script">
+
     <meta charset="UTF-8">
     <title>ChartOverlay</title>
+    <script type="application/javascript" src="fabric.js"></script>
+    <script type="application/javascript" src="chartoverlay.js"></script>
     <script type="application/javascript" src="main.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div style="text-align: center;" id="searchDiv">
+<canvas id="canvas"></canvas>
+<h1 id="loadingText">Loading...</h1>
+<div id="loadingCircle"></div>
+<div id="searchDiv">
     <a>Chart:</a>
-    <input type="text" id="search" placeholder="Chart Number" onkeydown="function f(event) {
-      if (event.key !== 'Enter') return;
-      searchChart();
-    }">
-    <button onclick="searchChart()">Search</button>
+    <label for="search">
+        <input type="text" id="search" placeholder="Chart Number" onchange="searchChart()">
+        <button onclick="searchChart()">Search</button>
+    </label>
+</div>
+<div id="optionsDiv">
+    <h2>Options</h2>
+    <label for="bounds" onclick="updateOptions()">
+        <input type="checkbox" id="bounds">
+        <a>Show bounds</a>
+    </label>
 </div>
 </body>
 </html>

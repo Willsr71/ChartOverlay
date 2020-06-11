@@ -9,7 +9,6 @@ import sr.will.chartoverlay.util.FileUtil;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
-import java.awt.image.WritableRaster;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
