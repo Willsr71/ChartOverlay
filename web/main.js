@@ -1,5 +1,7 @@
-let chartList = [];
+const stage = new createjs.Stage("canvas");
+const resizer = window.pica({features: ['js', 'wasm', 'cib', 'ww']});
 const chartOverlay = new ChartOverlay();
+let chartList = [];
 
 function l(element) {
     return document.getElementById(element);
@@ -24,6 +26,8 @@ function searchChart() {
 
 function updateOptions() {
     chartOverlay.options.showBounds = l("bounds").checked;
+    chartOverlay.options.section = l("section").value;
+    console.log("Options updated");
 }
 
 function setLoading(loading) {
@@ -39,12 +43,27 @@ function checkResponse(response) {
     return response.json();
 }
 
+function getSelectOptions(options) {
+    let str = "";
+    for (let option of options) {
+        str += "<option>" + option + "</option>";
+    }
+    return str;
+}
+
+function onResize() {
+    l("canvas").width = window.visualViewport.width;
+    l("canvas").height = window.visualViewport.height;
+}
+
+window.onresize = onResize;
+
 window.onload = function () {
     fetch("/catalog/list")
         .then(checkResponse)
         .then(json => {
             chartList = json;
         });
-    chartOverlay.setup();
+    onResize();
     setLoading(false);
 };

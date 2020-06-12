@@ -3,13 +3,11 @@
 <head>
     <link rel="preload" href="style.css" as="style">
     <link rel="preload" href="/catalog/list" as="fetch" crossorigin="anonymous">
-    <link rel="preload" href="fabric.js" as="script">
+    <link rel="preload" href="easeljs.js" as="script">
+    <link rel="preload" href="pica.js" as="script">
 
     <meta charset="UTF-8">
     <title>ChartOverlay</title>
-    <script type="application/javascript" src="fabric.js"></script>
-    <script type="application/javascript" src="chartoverlay.js"></script>
-    <script type="application/javascript" src="main.js"></script>
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -19,16 +17,40 @@
 <div id="searchDiv">
     <a>Chart:</a>
     <label for="search">
-        <input type="text" id="search" placeholder="Chart Number" onchange="searchChart()">
+        <input type="text" id="search" placeholder="Chart Number" onchange="searchChart()" autofocus>
         <button onclick="searchChart()">Search</button>
     </label>
 </div>
-<div id="optionsDiv">
+<div id="optionsDiv" onclick="updateOptions()">
     <h2>Options</h2>
-    <label for="bounds" onclick="updateOptions()">
+    <label for="bounds">
         <input type="checkbox" id="bounds">
         <a>Show bounds</a>
     </label>
+    <br/><br/>
+    <label for="refpoints">
+        <input type="checkbox" id="refpoints">
+        <a>Show reference points</a>
+    </label>
+    <br/><br/>
+    <label for="section">
+        <a>Section: </a>
+        <select id="section">
+            <option>None</option>
+        </select>
+    </label>
+    <br/><br/>
+    <label for="palette">
+        <a>Color palette: </a>
+        <select id="palette">
+            <option>None</option>
+        </select>
+    </label>
+    <br/>
 </div>
+<script type="application/javascript" src="easeljs.js"></script>
+<script type="application/javascript" src="pica.js"></script>
+<script type="application/javascript" src="chartoverlay.js"></script>
+<script type="application/javascript" src="main.js"></script>
 </body>
 </html>
