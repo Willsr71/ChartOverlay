@@ -19,6 +19,8 @@ public class ChartManager {
     private static Map<String, List<Thread>> activeDownloads = new HashMap<>();
 
     public static RasterChart fetchBSB(String chart) {
+        if (!ChartOverlay.catalog.chartsByNumber.containsKey(chart)) return null;
+
         while (activeDownloads.containsKey(chart)) {
             if (!activeDownloads.get(chart).contains(Thread.currentThread())) {
                 activeDownloads.get(chart).add(Thread.currentThread());

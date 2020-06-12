@@ -9,6 +9,8 @@ import sr.will.chartoverlay.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static sr.will.chartoverlay.chart.ChartManager.CHART_DIR;
 
@@ -16,9 +18,15 @@ public class ChartIO {
     public static boolean isCurrent(String chart) {
         File infoFile = new File(CHART_DIR + chart, chart + ".json");
         if (!Files.exists(infoFile.toPath())) {
-            // TODO Check if up to date
             return false;
         }
+
+        RasterChart chartInfo = FileUtil.readJson(infoFile, RasterChart.class);
+
+        ChartOverlay.LOGGER.info("Catalog revision date: {}", ChartOverlay.catalog.chartsByNumber.get(chart).revisionDate);
+        ChartOverlay.LOGGER.info("Existing chart revision date: {}", chartInfo.header.noticeToMariners.date);
+        ChartOverlay.LOGGER.info("Fixed? date: {}", ZonedDateTime.parse(ChartOverlay.catalog.chartsByNumber.get(chart).revisionDate, DateTimeFormatter.BASIC_ISO_DATE));
+        ChartOverlay.LOGGER.info("Fixed? date: {}", ZonedDateTime.parse(chartInfo.header.noticeToMariners.date));
 
         return true;
     }

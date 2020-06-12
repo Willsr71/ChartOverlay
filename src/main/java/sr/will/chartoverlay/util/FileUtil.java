@@ -1,12 +1,16 @@
 package sr.will.chartoverlay.util;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.json.XML;
 import sr.will.chartoverlay.ChartOverlay;
+import sr.will.chartoverlay.config.Config;
 import sr.will.chartoverlay.descriptor.catalog.json.Catalog;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.nio.file.Files;
 
 public class FileUtil {
     private static File getFolder(String name) {
@@ -15,20 +19,54 @@ public class FileUtil {
         return folder;
     }
 
-    public static void processProductCatalog(String name) {
-        ChartOverlay.LOGGER.info("Processing {}", name);
+    public static Config getConfig() {
+        File configFile = new File("config.json");
+        if (!Files.exists(configFile.toPath())) {
+            Config config = new Config();
+            FileUtil.writeGson(new Config(), ".", "config", "config");
+            return config;
+        }
+
+        return FileUtil.readJson(new File("config.json"), Config.class);
+    }
+
+    private static String getProductCatalogName() {
+        return "RNCProdCat_" + ChartOverlay.config.productCatalogNum;
+    }
+
+    public static void processProductCatalog() {
         try {
-            JSONObject json = XML.toJSONObject(new InputStreamReader(new FileInputStream(new File(getFolder("catalog"), name + ".xml"))));
+            JSONObject json = XML.toJSONObject(new InputStreamReader(new FileInputStream(new File(getFolder("catalog"), getProductCatalogName() + ".xml"))));
             json = (JSONObject) json.get("DS_Series");
-            writeJSON(name + "_raw", json);
+            writeJSON(getProductCatalogName() + "_raw", json);
 
             Catalog catalog = new Catalog(json);
             ChartOverlay.LOGGER.info("Processed {} charts!", catalog.charts.size());
 
-            writeGson(catalog, "catalog", name, "Catalog");
+            writeGson(catalog, "catalog", getProductCatalogName(), "Catalog");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Catalog getProductCatalog() {
+        try {
+            File catalogXML = new File(getFolder("catalog"), getProductCatalogName() + ".xml");
+            if (!Files.exists(catalogXML.toPath()) ||
+                    System.currentTimeMillis() > ChartOverlay.config.lastCatalogFetch + ChartOverlay.config.catalogFetchInterval) {
+                ChartOverlay.LOGGER.info("Product catalog out of date, fetching new one");
+                FileUtils.copyURLToFile(new URL("https://www.charts.noaa.gov/RNCs/{catalog}".replace("{catalog}", getProductCatalogName() + ".xml")), catalogXML);
+                processProductCatalog();
+                ChartOverlay.config.lastCatalogFetch = System.currentTimeMillis();
+                ChartOverlay.instance.saveConfig();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Catalog catalog = FileUtil.readJson(new File("catalog", getProductCatalogName() + ".json"), Catalog.class);
+        catalog.catalogCharts();
+        return catalog;
     }
 
     public static void writeJSON(String name, JSONObject json) {

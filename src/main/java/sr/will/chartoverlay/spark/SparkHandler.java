@@ -4,7 +4,6 @@ import spark.Spark;
 import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.chart.ChartIO;
 import sr.will.chartoverlay.chart.ChartManager;
-import sr.will.chartoverlay.util.FileUtil;
 
 import static spark.Spark.*;
 
@@ -47,12 +46,6 @@ public class SparkHandler {
                 return ChartIO.getExtentImage(Integer.parseInt(q.params(":extent")));
             });
         });
-
-        get("/update", (request, response) -> {
-            FileUtil.processProductCatalog("RNCProdCat_19115");
-            ChartOverlay.instance.reloadCatalog();
-            return new Response();
-        }, JSON_TRANSFORMER);
     }
 
     public void stop() {

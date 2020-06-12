@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sr.will.chartoverlay.chart.kap.Header;
 import sr.will.chartoverlay.chart.kap.HeaderSerializer;
+import sr.will.chartoverlay.config.Config;
 import sr.will.chartoverlay.descriptor.catalog.json.Catalog;
 import sr.will.chartoverlay.generic.ChartPoint;
 import sr.will.chartoverlay.generic.PointDeserializer;
@@ -13,20 +14,19 @@ import sr.will.chartoverlay.generic.PointSerializer;
 import sr.will.chartoverlay.spark.SparkHandler;
 import sr.will.chartoverlay.util.FileUtil;
 
-import java.io.File;
-
 public class ChartOverlay {
     public static ChartOverlay instance;
 
     public static final Logger LOGGER = LoggerFactory.getLogger("ChartOverlay");
     public static final Gson GSON = new GsonBuilder()
-                                            .registerTypeAdapter(ChartPoint.class, new PointSerializer())
-                                            .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
-                                            .registerTypeAdapter(Header.class, new HeaderSerializer())
-                                            .create();
+            .registerTypeAdapter(ChartPoint.class, new PointSerializer())
+            .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
+            .registerTypeAdapter(Header.class, new HeaderSerializer())
+            .create();
 
     public static SparkHandler sparkHandler;
 
+    public static Config config;
     public static Catalog catalog;
 
     public ChartOverlay() {
@@ -49,11 +49,13 @@ public class ChartOverlay {
     public void reload() {
         sparkHandler.stop();
         sparkHandler.start();
-        reloadCatalog();
+
+        config = FileUtil.getConfig();
+
+        catalog = FileUtil.getProductCatalog();
     }
 
-    public void reloadCatalog() {
-        catalog = FileUtil.readJson(new File("catalog", "RNCProdCat_19115.json"), Catalog.class);
-        catalog.catalogCharts();
+    public void saveConfig() {
+        FileUtil.writeGson(config, ".", "config", "config");
     }
 }
