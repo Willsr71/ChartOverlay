@@ -37,7 +37,7 @@ class Chart {
                 this.scale = l("canvas").height / extentHeader.paneInfo.dimensions.height;
             }
         }
-        console.log("Initial scale: ", this.scale);
+        l("scale").innerText = (Math.round(scale * 1000) / 10) + "%";
     }
 
     extentLoaded() {
@@ -59,5 +59,31 @@ class Chart {
             if (shown.indexOf(extent) !== -1) this.extents[extent].show();
             else this.extents[extent].hide();
         }
+    }
+
+    moveBy(x, y) {
+        for (let extent of Object.values(this.extents)) {
+            extent.container.x = extent.container.x + x;
+            extent.container.y = extent.container.y + y;
+        }
+    }
+
+    zoom(zoom) {
+        this.scale = this.scale * zoom;
+        l("scale").innerText = (Math.round(this.scale * 1000) / 10) + "%";
+        for (let extent of Object.values(this.extents)) {
+            extent.container.scale = extent.container.scale * zoom;
+        }
+
+        setTimeout(function () {
+            if (lastScroll + 1000 > Date.now()) {
+                console.log("Skipping render, to soon");
+                return;
+            }
+            console.log("Rendering");
+            for (let extent of Object.values(charts[activeChart].extents)) {
+                extent.updateSize();
+            }
+        }, 1000);
     }
 }

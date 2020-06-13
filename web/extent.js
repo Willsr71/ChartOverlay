@@ -19,10 +19,11 @@ class Extent {
         let offscreenCanvas = document.createElement("canvas");
         offscreenCanvas.width = this.header.paneInfo.dimensions.width * this.chart.scale;
         offscreenCanvas.height = this.header.paneInfo.dimensions.height * this.chart.scale;
-        this.container.x = (l("canvas").width / 2) - (offscreenCanvas.width / 2);
         resizer.resize(this.image, offscreenCanvas, RESIZER_ARGS)
             .then(function () {
                 this.resizedImage = new createjs.Bitmap(offscreenCanvas);
+                this.container.scale = 1;
+                this.container.removeAllChildren();
                 this.container.addChild(this.resizedImage);
                 this.loaded = true;
                 this.chart.extentLoaded();
