@@ -1,7 +1,17 @@
 const stage = new createjs.Stage("canvas");
 const resizer = window.pica({features: ['js', 'wasm', 'cib', 'ww']});
-const chartOverlay = new ChartOverlay();
+const RESIZER_ARGS = {
+    unsharpAmount: 100,
+    unsharpRadius: 0.6,
+    unsharpThreshold: 2
+};
 let chartList = [];
+let charts = {};
+let activeChart = 0;
+
+let options = {
+    showBounds: false,
+};
 
 function l(element) {
     return document.getElementById(element);
@@ -19,15 +29,29 @@ function searchChart() {
     }
 
     setLoading(true);
-    fetch("/chart/" + chart)
-        .then(checkResponse)
-        .then(chartOverlay.loadChart)
+    charts[chart] = new Chart(chart);
+    activeChart = chart;
 }
 
 function updateOptions() {
-    chartOverlay.options.showBounds = l("bounds").checked;
-    chartOverlay.options.section = l("section").value;
+    options.showBounds = l("bounds").checked;
+    options.section = l("section").value;
+
+    if (options.section !== "All") {
+        for (let extent of Object.values(charts[activeChart].extents)) {
+            extent.hide();
+        }
+        charts[activeChart].extents[options.section].show();
+    }
     console.log("Options updated");
+}
+
+function chartLoaded() {
+    for (let chart of Object.values(charts)) {
+        if (!chart.loaded) return;
+    }
+
+    setLoading(false);
 }
 
 function setLoading(loading) {
