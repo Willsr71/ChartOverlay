@@ -12,7 +12,7 @@ public class SparkHandler {
 
     public SparkHandler() {
         port(8080);
-        externalStaticFileLocation("web");
+        externalStaticFileLocation(ChartOverlay.config.webDir);
     }
 
     public void start() {

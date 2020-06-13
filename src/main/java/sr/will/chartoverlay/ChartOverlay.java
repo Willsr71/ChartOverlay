@@ -19,10 +19,10 @@ public class ChartOverlay {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("ChartOverlay");
     public static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(ChartPoint.class, new PointSerializer())
-            .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
-            .registerTypeAdapter(Header.class, new HeaderSerializer())
-            .create();
+                                            .registerTypeAdapter(ChartPoint.class, new PointSerializer())
+                                            .registerTypeAdapter(ChartPoint.class, new PointDeserializer())
+                                            .registerTypeAdapter(Header.class, new HeaderSerializer())
+                                            .create();
 
     public static SparkHandler sparkHandler;
 
@@ -31,9 +31,11 @@ public class ChartOverlay {
 
     public ChartOverlay() {
         instance = this;
-        sparkHandler = new SparkHandler();
 
         reload();
+
+        sparkHandler = new SparkHandler();
+        sparkHandler.start();
 
         LOGGER.info("Done!");
     }
@@ -47,8 +49,10 @@ public class ChartOverlay {
     }
 
     public void reload() {
-        sparkHandler.stop();
-        sparkHandler.start();
+        if (sparkHandler != null) {
+            sparkHandler.stop();
+            sparkHandler.start();
+        }
 
         config = FileUtil.getConfig();
 

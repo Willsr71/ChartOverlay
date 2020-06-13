@@ -14,7 +14,7 @@ class Chart {
 
     load(info) {
         this.info = info;
-        this.getInitialScale()
+        this.getInitialScale();
 
         let sectionOptions = ["All"];
         let colorOptions = Object.keys(this.info.kapHeaders[0].colors);
@@ -47,5 +47,17 @@ class Chart {
         this.loaded = true;
         stage.update();
         chartLoaded();
+    }
+
+    showExtent(extentId) {
+        let shown;
+        if (extentId === 1) shown = Object.keys(this.extents);
+        else if (extentId == null) shown = [];
+        else shown = [extentId];
+
+        for (let extent in this.extents) {
+            if (shown.indexOf(extent) !== -1) this.extents[extent].show();
+            else this.extents[extent].hide();
+        }
     }
 }

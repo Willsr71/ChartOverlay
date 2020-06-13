@@ -11,6 +11,8 @@
     left: 50%;
     transform: translate(-50%, 100%);
     position: absolute;
+    background-color: white;
+    margin: 1px 1px 1px 1px;
 }
 
 #optionsDiv {

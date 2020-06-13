@@ -29,6 +29,11 @@ function searchChart() {
     }
 
     setLoading(true);
+    for (let chart of Object.values(charts)) {
+        chart.showExtent(null);
+    }
+    stage.update();
+
     charts[chart] = new Chart(chart);
     activeChart = chart;
 }
@@ -37,12 +42,9 @@ function updateOptions() {
     options.showBounds = l("bounds").checked;
     options.section = l("section").value;
 
-    if (options.section !== "All") {
-        for (let extent of Object.values(charts[activeChart].extents)) {
-            extent.hide();
-        }
-        charts[activeChart].extents[options.section].show();
-    }
+    charts[activeChart].showExtent(options.section === "All" ? 1 : options.section);
+
+    stage.update();
     console.log("Options updated");
 }
 
