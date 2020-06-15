@@ -65,11 +65,23 @@ class Chart {
         for (let extent of Object.values(this.extents)) {
             extent.container.x = extent.container.x + x;
             extent.container.y = extent.container.y + y;
+            if (extent.container.x > l("canvas").width / 2) {
+                extent.container.x = l("canvas").width / 2;
+            } else if (extent.container.x + (extent.header.paneInfo.dimensions.width * this.scale) < l("canvas").width / 2) {
+                extent.container.x = (l("canvas").width / 2) - (extent.header.paneInfo.dimensions.width * this.scale);
+            }
+
+            if (extent.container.y > l("canvas").height / 2) {
+                extent.container.y = l("canvas").height / 2;
+            } else if (extent.container.y + (extent.header.paneInfo.dimensions.height * this.scale) < l("canvas").height / 2) {
+                extent.container.y = (l("canvas").height / 2) - (extent.header.paneInfo.dimensions.height * this.scale);
+            }
         }
     }
 
     zoom(zoom) {
         this.scale = this.scale * zoom;
+        if (this.scale > 1) this.scale = 1;
         l("scale").innerText = (Math.round(this.scale * 1000) / 10) + "%";
         for (let extent of Object.values(this.extents)) {
             extent.container.scale = extent.container.scale * zoom;
@@ -81,6 +93,7 @@ class Chart {
                 return;
             }
             console.log("Rendering");
+            setLoading(true);
             for (let extent of Object.values(charts[activeChart].extents)) {
                 extent.updateSize();
             }
