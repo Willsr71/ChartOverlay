@@ -2,59 +2,18 @@ package sr.will.chartoverlay.chart;
 
 import org.apache.commons.io.FileUtils;
 import sr.will.chartoverlay.ChartOverlay;
-import sr.will.chartoverlay.chart.kap.RasterChart;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ChartManager {
-    public static final String CHART_DIR = "catalog/charts/";
+import static sr.will.chartoverlay.chart.ChartIO.CHART_DIR;
 
-    private static Map<String, List<Thread>> activeDownloads = new HashMap<>();
-
-    public static RasterChart fetchBSB(String chart) {
-        if (!ChartOverlay.catalog.chartsByNumber.containsKey(chart)) return null;
-
-        while (activeDownloads.containsKey(chart)) {
-            if (!activeDownloads.get(chart).contains(Thread.currentThread())) {
-                activeDownloads.get(chart).add(Thread.currentThread());
-            }
-
-            try {
-                ChartOverlay.LOGGER.info("Active download for chart {}, waiting", chart);
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                ChartOverlay.LOGGER.info("Download wait thread interrupted");
-            }
-        }
-
-        if (!bsbExists(chart)) {
-            activeDownloads.put(chart, new ArrayList<>());
-            downloadBSB(chart);
-            // Interrupt all waiting download threads
-            activeDownloads.remove(chart).forEach(Thread::interrupt);
-        }
-
-        try {
-            return ChartIO.read(chart);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private static boolean bsbExists(String chart) {
-        String[] list = new File(CHART_DIR).list();
-        if (list == null) return false;
-        return Arrays.asList(list).contains(chart);
-    }
+public class ChartBSBIO {
 
     public static void downloadBSB(String chart) {
         try {
@@ -62,11 +21,17 @@ public class ChartManager {
             ChartOverlay.LOGGER.info("Downloading chart {}...", chart);
             FileUtils.copyURLToFile(new URL("https://www.charts.noaa.gov/RNCs/{chart}.zip".replace("{chart}", chart)), zipFile);
             ChartOverlay.LOGGER.info("Extracting chart {}...", chart);
+            removeBSBFiles(chart);
             extractFolder(FileUtils.openInputStream(zipFile));
             ChartOverlay.LOGGER.info("Done extracting chart {}", chart);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void removeBSBFiles(String chart) throws IOException {
+        File folder = new File(CHART_DIR, chart);
+        FileUtils.deleteDirectory(folder);
     }
 
     private static void extractFolder(InputStream inputStream) throws IOException {

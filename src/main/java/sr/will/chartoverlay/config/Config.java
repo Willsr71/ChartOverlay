@@ -1,5 +1,7 @@
 package sr.will.chartoverlay.config;
 
+import java.util.HashMap;
+
 public class Config {
     public int productCatalogNum = 19115;
     public long lastCatalogFetch = 0;

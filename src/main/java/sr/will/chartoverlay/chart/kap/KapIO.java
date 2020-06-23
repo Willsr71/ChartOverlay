@@ -13,7 +13,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static sr.will.chartoverlay.chart.ChartManager.CHART_DIR;
+import static sr.will.chartoverlay.chart.ChartIO.CHART_DIR;
 
 public class KapIO {
     private static final char[] multiplierMask = {0, 63, 31, 15, 7, 3, 1, 0};
@@ -30,10 +30,6 @@ public class KapIO {
             KAPHeader kapHeader = ChartOverlay.GSON.fromJson(ChartOverlay.GSON.toJson(getKAPHeader(inputStream)), KAPHeader.class);
             rasterChart.addKAPHeader(kapHeader);
             writePNG(getKAPImage(inputStream, kapHeader), kapHeader, kapHeader.colors.get("RGB"), new File(CHART_DIR + chart, kapFile.number + ".png"));
-            /*
-            for (String color : kapHeader.colors.keySet()) {
-                writePNG(image, kapHeader, kapHeader.colors.get(color), new File(CHART_DIR + chart, kapFile.number + "_" + color + ".png"));
-            }*/
 
             inputStream.close();
         }

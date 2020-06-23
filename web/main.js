@@ -61,7 +61,6 @@ function chartLoaded() {
 
 function setLoading(loading) {
     l("loadingCircle").hidden = !loading;
-    l("loadingText").hidden = !loading;
 }
 
 function checkResponse(response) {

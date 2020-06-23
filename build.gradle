@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     compile "org.slf4j:slf4j-simple:1.7.30"
-    //compile "org.ghost4j:ghost4j:1.0.1"
+    compile "org.ghost4j:ghost4j:1.0.1"
     compile "com.google.code.gson:gson:2.8.6"
     compile "org.json:json:20200518"
     compile "com.sparkjava:spark-core:2.8.0"

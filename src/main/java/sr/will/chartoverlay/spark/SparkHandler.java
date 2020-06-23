@@ -3,7 +3,6 @@ package sr.will.chartoverlay.spark;
 import spark.Spark;
 import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.chart.ChartIO;
-import sr.will.chartoverlay.chart.ChartManager;
 
 import static spark.Spark.*;
 
@@ -36,15 +35,12 @@ public class SparkHandler {
                 get("/list", (q, a) -> ChartOverlay.catalog.chartsByRegion.keySet(), JSON_TRANSFORMER);
                 get("/:region", (q, a) -> ChartOverlay.catalog.chartsByRegion.get(Integer.parseInt(q.params(":region"))), JSON_TRANSFORMER);
             });
+            before((q, a) -> a.type("application/json"));
         });
 
         path("/chart", () -> {
-            get("/:chart", (q, a) -> ChartManager.fetchBSB(q.params(":chart")), JSON_TRANSFORMER);
-            get("/png/:extent", (q, a) -> {
-                a.raw();
-                a.header("Content-Type", "image/png");
-                return ChartIO.getExtentImage(Integer.parseInt(q.params(":extent")));
-            });
+            before("/:chart", (q, a) -> a.type("application/json"));
+            get("/:chart", (q, a) -> ChartIO.getChart(q.params(":chart")), JSON_TRANSFORMER);
         });
     }
 
