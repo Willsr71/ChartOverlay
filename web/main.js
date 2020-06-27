@@ -80,8 +80,8 @@ function getSelectOptions(options) {
 }
 
 function onResize() {
-    l("canvas").width = window.visualViewport.width;
-    l("canvas").height = window.visualViewport.height;
+    l("canvas").width = window.innerWidth;
+    l("canvas").height = window.innerHeight;
 }
 
 function onMouseWheel(e) {

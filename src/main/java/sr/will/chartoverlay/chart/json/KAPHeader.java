@@ -26,11 +26,17 @@ public class KAPHeader extends Header implements Serializable {
         public String name;
         public int number;
         public Dimensions dimensions;
+        public Offset offset;
         public int dpi;
 
         public static class Dimensions implements Serializable {
             public int width;
             public int height;
+        }
+
+        public static class Offset implements Serializable {
+            public int x;
+            public int y;
         }
     }
 

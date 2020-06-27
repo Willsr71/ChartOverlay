@@ -7,6 +7,8 @@ import sr.will.chartoverlay.ChartOverlay;
 import sr.will.chartoverlay.config.Config;
 import sr.will.chartoverlay.descriptor.catalog.json.Catalog;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -99,6 +101,15 @@ public class FileUtil {
             FileWriter writer = new FileWriter(new File(getFolder(folder), name + ".json"));
             writer.write(ChartOverlay.GSON.toJson(object));
             writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeImage(RenderedImage image, String folder, String name) {
+        ChartOverlay.LOGGER.info("Writing image...");
+        try {
+            ImageIO.write(image, "png", new File(getFolder(folder), name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

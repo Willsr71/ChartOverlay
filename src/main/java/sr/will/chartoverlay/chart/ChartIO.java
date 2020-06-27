@@ -51,7 +51,7 @@ public class ChartIO {
         if (!bsbExists(chart)) {
             activeDownloads.put(chart, new ArrayList<>());
             ChartBSBIO.downloadBSB(chart);
-            ChartPDFIO.downloadPDF(chart);
+            File tempFile = ChartPDFIO.downloadPDF(chart);
             // Interrupt all waiting download threads
             activeDownloads.remove(chart).forEach(Thread::interrupt);
         }
