@@ -17,24 +17,37 @@ import java.util.List;
 import static sr.will.chartoverlay.chart.ChartIO.CHART_DIR;
 
 public class ChartProcessThread extends Thread {
-    private String chart;
-    private List<Thread> waitingThreads = new ArrayList<>();
+    private final String chart;
+    private final List<Thread> waitingThreads = new ArrayList<>();
 
     public boolean done = false;
     public RasterChart rasterChart = null;
 
     public ChartProcessThread(String chart, Thread initiatingThread) {
-        ChartOverlay.LOGGER.info("New thread {} processing chart {} from thread {}", Thread.currentThread(), chart, initiatingThread);
-
         this.chart = chart;
         waitingThreads.add(initiatingThread);
     }
 
     public void run() {
+        ChartOverlay.LOGGER.info("New thread {} processing chart {}", Thread.currentThread(), chart);
+
         rasterChart = getRasterChart();
         done = true;
 
         waitingThreads.forEach(Thread::interrupt);
+    }
+
+    public synchronized void addWaitingThread(Thread thread) {
+        waitingThreads.add(thread);
+    }
+
+    public synchronized void removeWaitingThread(Thread thread) {
+        waitingThreads.remove(thread);
+
+        if (waitingThreads.size() == 0) {
+            ChartIO.processThreads.remove(chart);
+            ChartOverlay.LOGGER.info("Removing thread {} for chart {}", Thread.currentThread(), chart);
+        }
     }
 
     private RasterChart getRasterChart() {
